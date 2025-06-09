@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análisis y Diseño de un Sistema</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    .dropdown-submenu {
+      position: relative;
+    }
+    .dropdown-submenu .dropdown-menu {
+      top: 0;
+      left: 100%;
+      margin-top: -5px;
+      display: none;
+    }
+    .dropdown-submenu:hover .dropdown-menu {
+      display: block;
+    }
+    .nav-link {
+      color: white;
+    }
+    .navbar-nav .dropdown:hover > .dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+    .dropdown-menu .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+    .dropdown-menu .dropdown-item:hover {
+    background-color: #bd0707 !important;
+    color: #ffffff !important;
+    }
+    section {
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #f5f5dc;
+      border-radius: 8px;
+    }
+    body {
+      padding-top: 80px;
+    }
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
+    h1, h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      color: #333;
+    }
+    h3, h4 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      color: #555;
+    }
+    p, a, button {
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+      color: #060606;
+    }
+    h1.special, .highlight {
+      font-family: 'Pacifico', cursive;
+      color: #bd0707;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const navbarHeight = document.querySelector('.navbar').offsetHeight;
+      document.querySelectorAll('a.nav-link, .dropdown-item').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (!href.startsWith('#')) return;
+          const targetId = href.substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            e.preventDefault();
+            const targetPosition = targetElement.offsetTop - navbarHeight;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body style="background-color: #f5f5dc;">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #bd0707;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#inicio">
+        <img src="img/logo.jpg" alt="Logo Yumara" style="width: 200px; height: 80px;" />
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#inicio" style="font-size: 20px;">Inicio</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="marcoDropdown" role="button" data-bs-toggle="dropdown" style="font-size: 20px;">Marco Teórico</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#descripcion_proyecto" style="font-size: 20px">Descripción del Proyecto</a></li>
+              <li><a class="dropdown-item" href="#analisis_estructurad" style="font-size: 20px">Análisis y Modelos</a></li>             
+              <li><a class="dropdown-item" href="#alcance_objetivos" style="font-size: 20px">Alcance y Objetivos</a></li>
+              <li><a class="dropdown-item" href="#info_yumara" style="font-size: 20px">Información de Yumara</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="analisisDropdown" role="button" data-bs-toggle="dropdown" style="font-size: 20px;">Análisis Estructurado</a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="#analisis_estructurado" style="font-size: 20px">Modelo Escencial</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#modelo_ambiental" style="font-size: 20px" >Modelo Ambiental</a></li>
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" href="#modelo_comportamiento" style="font-size: 20px">Modelo de Comportamiento</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#dfd" style="font-size: 20px">Diagrama de Flujo de Datos</a></li>
+                        <li><a class="dropdown-item" href="#der" style="font-size: 20px">Diagrama Entidad/Relación</a></li>
+                        <li><a class="dropdown-item" href="#dd" style="font-size: 20px">Diagrama de Datos</a></li>
+                        <li><a class="dropdown-item" href="#dts" style="font-size: 20px">Diagrama de Transacciones</a></li>
+                    </ul>
+                    </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#modelado" style="font-size: 20px;">Modelado Orientado a Objetos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#video" style="font-size: 20px;">Video</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    
+    <!-- Contenido principal -->
+    <main>
+        <div class="container">
+
+            <!-- Sección de Inicio -->
+            
+            <section class="section-content" id="inicio">
+                <h1 class="text-center mb-4" style="font-size: 36px; font-family: 'Arial', sans-serif; color: #bd0707; font-weight: bold; text-shadow: 2px 2px #ffc107;">
+                    Análisis y Diseño de Sistema de Venta y Gestión de Productos Yumara Supermarket
+                </h1>
+
+                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+
+                    <div class="carousel-inner" style="height: 80vh;">
+                        <!-- Slide 1 -->
+                        <div class="carousel-item active" data-bs-interval="5000" style="height: 100%;">
+                            <img src="img/Yumara.jpg" class="d-block w-100" alt="Supermercado 1"
+                                style="height: 100%; object-fit: cover; filter: brightness(85%); transition: filter 0.3s ease-in-out;">
+                            <div class="carousel-caption d-none d-md-block" style="position: absolute; bottom: 30px; left: 20px; right: 20px; text-align: center;">
+                                <h5 style="font-size: 32px; font-family: 'Georgia', serif; color: #ffffff; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
+                                    Gestión Integral de Ventas
+                                </h5>
+                                <p style="font-size: 20px; font-family: 'Verdana', sans-serif; color: #ffffff; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);">
+                                    Optimiza cada transacción con un sistema diseñado para garantizar rapidez y precisión en la gestión de ventas.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="carousel-item" data-bs-interval="5000" style="height: 100%;">
+                            <img src="img/Yumara1.jpg" class="d-block w-100" alt="Supermercado 2"
+                                style="height: 100%; object-fit: cover; filter: brightness(85%); transition: filter 0.3s ease-in-out;">
+                            <div class="carousel-caption d-none d-md-block" style="position: absolute; bottom: 30px; left: 20px; right: 20px; text-align: center;">
+                                <h5 style="font-size: 30px; font-family: 'Georgia', serif; color: #ffffff; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
+                                    Control de Inventarios Eficiente
+                                </h5>
+                                <p style="font-size: 18px; font-family: 'Verdana', sans-serif; color: #ffffff; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);">
+                                    Mantén el control absoluto de tu inventario con actualizaciones automáticas y alertas de reabastecimiento.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="carousel-item" data-bs-interval="5000" style="height: 100%;">
+                            <img src="img/yumara2.jpg" class="d-block w-100" alt="Supermercado 3"
+                                style="height: 100%; object-fit: cover; filter: brightness(85%); transition: filter 0.3s ease-in-out;">
+                            <div class="carousel-caption d-none d-md-block" style="position: absolute; bottom: 30px; left: 20px; right: 20px; text-align: center;">
+                                <h5 style="font-size: 30px; font-family: 'Georgia', serif; color: #ffffff; font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
+                                    Relación Sólida con Proveedores
+                                </h5>
+                                <p style="font-size: 18px; font-family: 'Verdana', sans-serif; color: #ffffff; line-height: 1.5; text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);">
+                                    Simplifica la administración de proveedores con órdenes de compra automatizadas y seguimiento continuo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controles -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </section>
+
+
+            <!-- Sección de Marco Teórico -->
+            <section id="marco_teorico">
+                <div class="container">
+                    <h2 class="text-center mb-4" id="descripcion_proyecto">Marco Teórico</h2>
+
+                    <h3>Descripción General del Proyecto</h3>
+                    <p>
+                        El presente proyecto tiene como objetivo desarrollar un sistema informático especializado en el análisis y diseño de procesos 
+                        orientados a la administración y gestión de ventas del supermercado Yumara, ubicado en La Paz, Bolivia. Este sistema surge 
+                        como una respuesta a la necesidad de modernizar las operaciones internas del supermercado y brindar un mejor control sobre los recursos, 
+                        facilitando así la toma de decisiones estratégicas en tiempo real.
+                    </p>
+
+                    <p>
+                        La iniciativa está dirigida a optimizar la eficiencia en dos áreas críticas del negocio: la gestión de inventarios y el control 
+                        de ventas. A través de herramientas digitales intuitivas y automatizadas, se espera que el sistema permita realizar 
+                        seguimientos detallados del stock de productos, generar alertas por bajo inventario, identificar productos de alta rotación 
+                        y registrar cada venta con exactitud. Esto reducirá errores manuales, mejorará la planificación de compras y asegurará 
+                        una reposición oportuna.
+                    </p>
+
+                    <p>
+                        Además, el sistema busca integrarse de forma fluida con los procesos administrativos del supermercado, permitiendo un mejor 
+                        manejo de la información sobre proveedores, precios, ofertas y estadísticas de comportamiento del cliente. Con esta solución, 
+                        se facilitará la trazabilidad completa de cada operación, desde la llegada del producto al almacén hasta su venta final en el punto de caja.
+                    </p>
+
+                    <p>
+                        En esencia, el proyecto no solo pretende digitalizar las funciones actuales del supermercado, sino también dotarlo de una 
+                        infraestructura tecnológica que le permita crecer, adaptarse a nuevos retos del mercado y ofrecer un servicio más ágil, confiable y profesional 
+                        a sus clientes.
+                    </p>
+
+                    <h3 id="analisis_estructurad">Análisis Estructurado del Proyecto</h3>
+
+                    <p>
+                        El análisis estructurado del sistema representa una etapa clave en el proceso de desarrollo, ya que permite descomponer 
+                        y comprender de manera detallada las funciones operativas del supermercado Yumara. A través de esta metodología, se 
+                        identifican los procesos más relevantes del negocio y se organizan de forma lógica y jerárquica, facilitando su correcta implementación 
+                        en el sistema propuesto.
+                    </p>
+
+                    <p>
+                        Este enfoque no solo ayuda a visualizar cómo se relacionan las distintas áreas funcionales del supermercado, sino que también 
+                        permite anticipar posibles fallos, cuellos de botella o redundancias. De esta manera, se puede asegurar que cada proceso —ya sea 
+                        la venta, el registro de inventario, la recepción de productos o la gestión de proveedores— esté alineado con los objetivos 
+                        del negocio y cuente con el soporte tecnológico adecuado.
+                    </p>
+
+                    <p>
+                        Para lograr esto, se emplean dos modelos fundamentales dentro del análisis estructurado:
+                    </p>
+
+                    <h4>Modelos Utilizados</h4>
+
+                    <h5>Modelo Ambiental</h5>
+                    <ul>
+                        <li><strong>Declaración de Propósitos (DP):</strong> Define los objetivos principales del sistema, como la optimización del control de inventarios,
+                            la gestión de ventas, y la relación con proveedores.
+                        </li>
+                        <li><strong>Lista de Acontecimientos (LA):</strong> Identifica los eventos clave del sistema, como ventas realizadas, actualizaciones de inventario,
+                            y órdenes de compra a proveedores.
+                        </li>
+                        <li><strong>Diagrama de Contexto (DC):</strong> Representa las interacciones principales entre el sistema y los actores externos, como clientes,
+                            administradores y proveedores.
+                        </li>
+                    </ul>
+
+                    <h5>Modelo de Comportamiento</h5>
+                    <ul>
+                        <li><strong>Diagrama de Flujo de Datos (DFD):</strong> Muestra cómo la información fluye entre los diferentes procesos del sistema, como ventas,
+                            actualizaciones de inventarios y generación de reportes.
+                        </li>
+                        <li><strong>Diagrama Entidad/Relación (DER):</strong> Define las relaciones entre las entidades clave del sistema, como productos, clientes y proveedores.
+                        </li>
+                        <li><strong>Diagrama de Datos (DD):</strong> Detalla los datos utilizados y producidos por el sistema, como registros de ventas, catálogos de productos,
+                            y órdenes de compra.
+                        </li>
+                        <li><strong>Diagrama de Transacciones (DTS):</strong> Representa las transacciones principales del sistema, como la venta de productos, actualizaciones
+                            de inventarios y pedidos a proveedores.
+                        </li>
+                    </ul>
+
+                    <h3 id="alcance_objetivos">Alcance y Objetivos</h3>
+                    <p>
+                        Este proyecto tiene como alcance la implementación de un sistema integral diseñado específicamente para optimizar tres áreas fundamentales del 
+                        funcionamiento del supermercado Yumara: la gestión de ventas, el control de inventarios y la administración de proveedores. 
+                        La solución tecnológica propuesta abarcará todos los procesos claves de estas áreas, desde el registro eficiente de las transacciones diarias 
+                        hasta el seguimiento de existencias en tiempo real y la relación continua con los proveedores estratégicos del supermercado.
+                    </p>
+
+                    <p>
+                        Uno de los objetivos principales del proyecto es asegurar un <strong>flujo continuo y eficiente de productos</strong> hacia las estanterías, evitando faltantes 
+                        y sobrestock, lo que se traduce en una mejor experiencia de compra para los clientes y una operación más rentable para la empresa. 
+                        Asimismo, se busca <strong>mejorar la trazabilidad de los productos</strong>, facilitando la identificación de movimientos, fechas de ingreso y niveles de rotación.
+                    </p>
+
+                    <p>
+                        En cuanto a la gestión de ventas, el sistema permitirá <strong>registrar y analizar cada transacción</strong>, generando reportes útiles que ayudarán a 
+                        tomar decisiones informadas sobre promociones, productos más vendidos, horarios de mayor flujo y desempeño por caja o por vendedor. 
+                        De esta forma, Yumara podrá adaptar su estrategia comercial a las necesidades reales del mercado local.
+                    </p>
+
+                    <p>
+                        Respecto al área de proveedores, se busca <strong>fortalecer la administración de relaciones comerciales</strong> mediante un módulo que permita almacenar 
+                        información detallada sobre cada proveedor, llevar un historial de pedidos, controlar fechas de entrega y establecer alertas para seguimientos o renovaciones 
+                        de contratos. Esto facilitará una planificación más eficaz y reducirá retrasos o inconsistencias en la reposición de productos.
+                    </p>
+
+                    <p>
+                        En conjunto, los objetivos específicos que guían este proyecto son los siguientes:
+                    </p>
+
+                    <ul>
+                        <li>Optimizar la operatividad del supermercado mediante procesos digitales automatizados y eficientes.</li>
+                        <li>Reducir el margen de error humano en registros, conteos y reportes relacionados con ventas e inventario.</li>
+                        <li>Incrementar la disponibilidad de productos en góndola para satisfacer la demanda sin interrupciones.</li>
+                        <li>Disponer de información precisa y en tiempo real para la toma de decisiones administrativas y comerciales.</li>
+                        <li>Fomentar relaciones sólidas y organizadas con los proveedores para garantizar entregas puntuales y confiables.</li>
+                        <li>Mejorar la experiencia del cliente a través de un servicio ágil, ordenado y orientado a la satisfacción inmediata.</li>
+                    </ul>
+
+                    <h3 id="info_yumara">Información del Yumara Supermarket</h3>
+                    <p>
+                        Yumara Supermarket es un supermercado de confianza ubicado en la Av. Del Maestro NRO 80, en la ciudad de La Paz, Bolivia. 
+                        Actualmente cuenta con una sola sucursal, pero ha logrado posicionarse como una opción destacada dentro del comercio minorista local, 
+                        gracias a su compromiso con la calidad, el buen servicio y la atención cercana al cliente.
+                    </p>
+                    <p>
+                        En sus instalaciones, los visitantes pueden encontrar una amplia variedad de productos distribuidos en diversas categorías, tales como: 
+                        alimentos frescos y envasados, carnes, lácteos, frutas y verduras, bebidas frías y calientes, productos de limpieza para el hogar, artículos de higiene personal, 
+                        cuidado infantil, además de utensilios y accesorios esenciales para el día a día en el hogar. Esta extensa gama de opciones permite que las familias puedan realizar 
+                        todas sus compras en un solo lugar, con comodidad y eficiencia.
+                    </p>
+                    <p>
+                        Yumara Supermarket atiende a más de 1,000 clientes registrados cada semana, lo que demuestra la fidelidad de su comunidad y el reconocimiento que ha ganado en el tiempo. 
+                        El supermercado no solo destaca por su surtido, sino también por su atención personalizada, promociones regulares y un entorno limpio, seguro y organizado que mejora 
+                        la experiencia de compra de cada visitante.
+                    </p>
+                    <p>
+                        A lo largo del tiempo, Yumara ha mantenido como prioridad la satisfacción de sus clientes, manteniendo precios competitivos sin sacrificar la calidad. 
+                        Gracias a su cercanía con el público y la mejora continua de sus servicios, Yumara Supermarket se proyecta con potencial para seguir creciendo y expandiéndose 
+                        a otras zonas de la ciudad, manteniendo siempre su esencia de servicio y compromiso con la comunidad paceña.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Sección de Análisis Estructurado -->
+            <section id="analisis_estructurado">
+                <br><br><br>
+                <h1 class="text-center mb-4">Modelo  esencial para el Yumara Supermarket <br></h1>
+            </header>
+            
+            <main>
+
+                    <h2>¿Qué es el Análisis Estructurado?</h2>
+                    <p>El análisis estructurado es una metodología que permite descomponer sistemas complejos en partes simples y organizadas, facilitando su diseño y documentación. Su enfoque principal es garantizar que los procesos y datos sean consistentes y estén alineados con los objetivos del sistema.</p>
+
+        
+                <section id="modelo-ambiental">
+                    <h2>Modelo Ambiental</h2>
+                    <p>El modelo ambiental define el alcance del sistema y su interacción con los agentes externos. Incluye los objetivos clave, los eventos principales que activan procesos y las relaciones con otras entidades.</p>
+                    <ul>
+                        <li><strong>Declaración de Propósitos (DP):</strong> Este modelo tiene como objetivo garantizar una gestión eficiente del inventario, procesar ventas con rapidez y mantener un registro actualizado de clientes y proveedores.</li>
+                        <li><strong>Lista de Acontecimientos (LA):</strong> Los eventos incluyen:
+                            <ul>
+                                <li>Registro de nuevos productos en el inventario.</li>
+                                <li>Actualización de cantidades en stock después de cada venta.</li>
+                                <li>Generación de reportes mensuales de ventas y stock.</li>
+                                <li>Notificación automática al administrador sobre niveles bajos de inventario.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Diagrama de Contexto (DC):</strong> 
+                            <p>Representa cómo el sistema interactúa con los agentes externos. Los principales actores son:</p>
+                            <ul>
+                                <li><strong>Clientes:</strong> Realizan compras y reciben comprobantes de pago.</li>
+                                <li><strong>Administradores:</strong> Gestionan el inventario y supervisan las ventas.</li>
+                                <li><strong>Proveedores:</strong> Suministran productos al sistema.</li>
+                                <li><strong>Sistema de Inventario:</strong> Registra y actualiza el stock en tiempo real.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+        
+                <section id="modelo-comportamiento">
+                    <h2>Modelo de Comportamiento</h2>
+                    <p>El modelo de comportamiento describe los flujos internos del sistema, las relaciones entre las entidades principales y los datos que se procesan durante la operación del supermercado.</p>
+                    <ul>
+                        <li><strong>Diagrama de Flujo de Datos (DFD):</strong> Representa cómo la información fluye entre los procesos del sistema.</li>
+                        <li><strong>Diagrama Entidad/Relación (DER):</strong> Describe las conexiones entre las entidades principales: Productos, Clientes, Administradores y Proveedores.</li>
+                        <li><strong>Diagrama de Datos (DD):</strong> Detalla la estructura de los datos, como ID de productos, categorías y niveles de inventario.</li>
+                        <li><strong>Diagrama de Transacciones (DTS):</strong> Muestra los procesos clave, como agregar productos al inventario y registrar ventas.</li>
+                    </ul>
+                </section>
+        
+            </section>
+
+            <!-- Sección de Modelo Ambiental -->
+            <section id="modelo_ambiental">
+                <br><br><br>
+
+                <br><h1 class="text-center mb-4">Modelo Ambiental para nuestro sistema</h1>
+            
+                <br><h3>a) DECLARACIÓN DE PROPÓSITOS: </h3>
+            
+                <p>El sistema tiene como objetivo principal gestionar las operaciones de venta y el control de inventarios en el Yumara Supermarket. Esto incluye la administración de productos, precios, existencias, compras de clientes, proveedores, ofertas y reportes de ventas. Además, permite mejorar la experiencia del cliente, optimizar los procesos internos y asegurar la disponibilidad de productos.</p>
+                <h3>b) LISTA DE ACONTECIMIENTOS: </h3>
+                    
+                <p>Eventos relacionados con las ventas:</p>
+                <ol>
+                    <li>Un cliente selecciona productos para comprar.</li>
+                    <li>Un cliente realiza el pago en caja.</li>
+                    <li>Se genera un comprobante de venta.</li>
+                    <li>Se realiza una devolución de producto por parte del cliente.</li>
+                </ol>
+                
+                <p>Eventos relacionados con la gestión de inventarios:</p>
+            
+                <ol>
+                    <li>El inventario de un producto disminuye tras la venta.
+                    <li>Un empleado actualiza las existencias de un producto.
+                    <li>Se realiza el ingreso de un nuevo producto al sistema.
+                    <li>Se detecta un producto con stock mínimo y se notifica al proveedor.
+                </ol>
+                    
+                <p>Eventos relacionados con proveedores:</p>
+                <ol>
+                    <li>Se realiza un pedido de reposición de productos a un proveedor.</li>
+                    <li>Se registra la recepción de un pedido de un proveedor.</li>
+                </ol>
+                
+                <p>Eventos relacionados con ofertas y promociones:</p>
+                <ol>
+                    <li>Un administrador define una oferta o descuento para un producto.</li>
+                    <li>Se actualizan los precios de productos en oferta.</li>
+                </ol>
+            
+                <h3>Diagrama de Contexto</h3>
+                <div class="text-center mb-4">
+                    <img src="img/MA_DiagramaContext.png"
+                        alt="Diagrama Contexto"
+                        class="img-fluid"
+                        style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    
+                </div>                
+            </section>
+
+            <!-- Sección de Modelo de Comportamiento -->
+            <section id="modelo_comportamiento">
+                <br><br><br><br>
+                <h1 class="text-center mb-4" >Modelo de Comportamiento</h1>
+                <ul>
+                    <li id="dfd"><strong>Diagrama de Flujo de Datos (DFD):</strong>
+                         <p>El sistema coordina módulos de inventario, ventas y pagos para gestionar productos, transacciones y reportes en Yumara. Conecta proveedores, clientes y administración para mantener el flujo de mercancías, ventas y conciliaciones financieras.</p>
+                    </li>
+                    <div class="text-center mb-4">
+                        <img src="img/dfdy.drawio (1).png" alt="Diagrama DFD"
+                            class="img-fluid"
+                            style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    </div>
+                    <li id="der"><strong>Diagrama Entidad/Relación (DER):</strong> 
+                        <p>El diagrama entidad-relación describe las interacciones entre usuarios, ventas, productos e inventarios en el sistema de gestión Yumara, destacando cómo los clientes realizan compras, los administradores consultan reportes, y los proveedores suministran productos al inventario para mantener el flujo operativo.</p>
+                    </li>
+                    <div class="text-center mb-4">
+                        <img src="img/DERY.drawio.png" alt="Diagrama DER"
+                            class="img-fluid"
+                            style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    </div>
+
+                    <li id="dd"><strong>Diagrama de Datos (DD):</strong> 
+                        <p>El diagrama de datos define las relaciones entre entidades clave como clientes, productos, ventas, pagos, promociones e inventarios en el sistema. Cada entidad contiene atributos específicos, y sus relaciones garantizan la trazabilidad de operaciones como pedidos, devoluciones y generación de reportes.</p>
+                    </li>
+                    <div class="text-center mb-4">
+                        <img src="img/ddy.drawio (1).png" alt="Diagrama DD"
+                            class="img-fluid"
+                            style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    </div>
+
+                    <li id="dts"><strong>Diagrama de Transacciones (DTS):</strong>
+                        <p>El diagrama de transacciones muestra cómo interactúan los módulos del sistema, destacando la gestión de inventarios, promociones, pagos y devoluciones, vinculados a clientes, cajeros, proveedores y administradores. Cada flujo representa procesos como actualización de stock, registro de compras y generación de reportes, asegurando un manejo integral de operaciones en Yumara Supermarket.</p>
+                    </li>
+                    <div class="text-center mb-4">
+                        <img src="img/dcuy.drawio (1).png" alt="Diagrama DTS"
+                            class="img-fluid"
+                            style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                    </div>
+
+                </ul>
+            </section>
+
+            <!-- Sección de Modelado OaO-->
+            <section id="modelado">
+                <h1 class="text-center mb-4">Modelado Orientado a Objetos</h1>
+                <p class="text-justify">El modelado orientado a objetos del sistema del Yumara Supermarket refleja la interacción entre las principales entidades del negocio, sus relaciones y comportamientos. A continuación, se describen las principales clases y sus asociaciones:</p>
+    
+                <div class="mb-4">
+                    <h3 class="mb-2" style="font-size: 1.5rem; color: #000000; font-weight: bold;">Clase Reporte</h3>
+                    <p>La clase <strong>Reporte</strong> está asociada con:</p>
+                    <ul>
+                        <li><strong>Inventario</strong>: Relación de asociación para generar reportes de existencias y movimientos de productos.</li>
+                        <li><strong>Producto</strong>: Relación de asociación para detallar información de los productos en reportes específicos.</li>
+                        <li><strong>Empleado</strong>: Relación de asociación para incluir detalles del personal responsable en ciertos reportes.</li>
+                    </ul>
+                </div>
+    
+                <div class="mb-4">
+                    <h3 class="mb-2" style="font-size: 1.5rem; color: #000000; font-weight: bold;">Clase Inventario</h3>
+                    <p>La clase <strong>Inventario</strong> utiliza una relación de composición con:</p>
+                    <ul>
+                        <li><strong>Producto</strong>: Cada producto está directamente contenido en el inventario, estableciendo una dependencia fuerte.</li>
+                    </ul>
+                </div>
+    
+                <div class="mb-4">
+                    <h3 class="mb-2" style="font-size: 1.5rem; color: #000000; font-weight: bold;">Clase Venta</h3>
+                    <p>La clase <strong>Venta</strong> incluye las siguientes relaciones:</p>
+                    <ul>
+                        <li><strong>Producto</strong>: Relación de agregación para incluir múltiples productos en una transacción.</li>
+                        <li><strong>Empleado</strong>: Relación de asociación para registrar al empleado que procesó la venta.</li>
+                        <li><strong>Cliente</strong>: Relación de asociación para identificar al cliente involucrado en la transacción.</li>
+                    </ul>
+                </div>
+    
+                <div class="mb-4">
+                    <h3 class="mb-2" style="font-size: 1.5rem; color: #000000; font-weight: bold;">Clase Producto</h3>
+                    <p>La clase <strong>Producto</strong> tiene las siguientes relaciones:</p>
+                    <ul>
+                        <li><strong>CarritoDeCompra</strong>: Relación de asociación para incluir productos seleccionados por el cliente.</li>
+                        <li><strong>CategoríaProducto</strong>: Relación de asociación para clasificar productos según su categoría.</li>
+                    </ul>
+                </div>
+    
+                <div class="mb-4">
+                    <h3 class="mb-2" style="font-size: 1.5rem; color: #000000; font-weight: bold;">Clase Persona</h3>
+                    <p>La clase <strong>Persona</strong> es una clase general que hereda a:</p>
+                    <ul>
+                        <li><strong>Proveedor</strong>: Relación de herencia para representar a los proveedores del supermercado.</li>
+                        <li><strong>Empleado</strong>: Relación de herencia para gestionar a los empleados del sistema.</li>
+                        <li><strong>Cliente</strong>: Relación de herencia para manejar a los clientes registrados.</li>
+                    </ul>
+                </div>
+    
+                <p class="text-justify">Este modelado orientado a objetos permite establecer una estructura clara y modular del sistema, facilitando su desarrollo y mantenimiento.</p>
+                <h3>Diagrama del modelado orientado a Objetos</h3>
+                <div class="text-center mb-4">
+                    <img src="img/DCY.drawio.png" alt="Diagrama OaO"
+                        class="img-fluid"
+                        style="max-width: 1200px; width: 100%; height: auto; border: 3px solid #bd0707; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                </div>
+
+            </section>
+    
+            <!-- Sección de Video -->
+            <section id="video">
+                <h2 class="text-center" style="color: #000;">Video tutorial del Sistema de Gestión de Productos - Yumara Supermarket</h2>
+                <p style="font-size: 18px;">
+                    En este tutorial, te mostraremos el funcionamiento del sistema que estamos implementando para la gestión de ventas y administración de productos en el Yumara Supermarket.
+                    A través de este video, podrás entender cómo interactúan los distintos módulos del sistema, desde la navegacion en este sitio web y el sistema que proponemos implementar en tiempo real.
+                </p>
+
+                <div class="text-center mt-4">
+                    <iframe 
+                        src="https://drive.google.com/file/d/1JQwZiW9pCFgH0-vmOHG6dGtB43LAOaxy/preview"
+                        width="73%" 
+                        height="480" 
+                        allow="autoplay">
+                    </iframe>
+                </div>
+
+        
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 mt-4" style="background-color: #bd0707; color: white;">
+        <div class="container">
+            <!-- Sección principal -->
+            <div class="row">
+                <!-- Información del supermercado -->
+                <div class="col-md-4 mb-3">
+                    <h5>Yumara Supermarket</h5>
+                    <p>&copy; 2025 Yumara Supermarket</p>
+                    <p>La Paz, Bolivia</p>
+                </div>
+    
+                <!-- Información de contacto de los desarrolladores -->
+                <div class="col-md-4 mb-3">
+                    <h5>Contacto de Desarrolladores</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <strong>Jhostin Isaac Miranda Huarina</strong><br>
+                            Correo: jhostin.miranda@yumara.com<br>
+    
+                        </li>
+                        <li class="mt-2">
+                            <strong>Jhoselin Colque Condori</strong><br>
+                            Correo: jhoselin.colque@yumara.com<br>
+    
+                        </li>
+                        <li class="mt-2">
+                            <strong>Jhoseline Maidee Candia Mita</strong><br>
+                            Correo: jhoseline.candia@yumara.com<br>
+    
+                        </li>
+                        <li class="mt-2">
+                            <strong>Javier Oscar Huacatiti Yujra</strong><br>
+                            Correo: javier.huacatiti@yumara.com<br>
+    
+                        </li>
+                        <li class="mt-2">
+                            <strong>Neythan Mathew Rodríguez Calderón</strong><br>
+                            Correo: neythan.rodrígueza@yumara.com<br>
+    
+                        </li>
+                    </ul>
+                </div>
+    
+                <!-- Redes sociales -->
+                <div class="col-md-4 mb-3">
+                    <h5>Síguenos</h5>
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram fa-lg"></i></a>
+                    <p class="mt-3">Horario de atención:<br>Lunes a Domingo: 8:00 - 18:00 </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
